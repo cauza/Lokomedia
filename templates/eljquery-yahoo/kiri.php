@@ -27,7 +27,6 @@
   $no++;} 
   ?>
   </ul>
-
           </div>
 
             <!-- TAB -->         
@@ -48,11 +47,9 @@
                 <?php
                   $populer=mysql_query("SELECT * FROM berita ORDER BY dibaca DESC LIMIT 10");
                   while($p=mysql_fetch_array($populer)){
-
                     $isi_berita = strip_tags($p['isi_berita']); // membuat paragraf pada isi berita dan mengabaikan tag html
                     $isi = substr($isi_berita,0,100); // ambil sebanyak 100 karakter
                     $isi = substr($isi_berita,0,strrpos($isi," ")); // potong per spasi kalimat
-
                     echo "<li class='garisbawah'><a href=berita-$p[id_berita]-$p[judul_seo].html title=\"$isi ...\">$p[judul]</a> ($p[dibaca])</li>";
                   }
                 ?>          
@@ -69,11 +66,9 @@
                 <?php
                   $terkini=mysql_query("SELECT * FROM berita ORDER BY id_berita DESC LIMIT 11");
                   while($t=mysql_fetch_array($terkini)){
-                  
                     $isi_berita = strip_tags($t['isi_berita']); // membuat paragraf pada isi berita dan mengabaikan tag html
                     $isi = substr($isi_berita,0,100); // ambil sebanyak 100 karakter
                     $isi = substr($isi_berita,0,strrpos($isi," ")); // potong per spasi kalimat
-
                     echo "<li class='garisbawah'><a href=berita-$t[id_berita]-$t[judul_seo].html title=\"$isi ...\">$t[judul]</a></li>";
                   }
                 ?>                    
@@ -92,11 +87,9 @@
                                          WHERE komentar.id_berita=berita.id_berita  
                                          ORDER BY id_komentar DESC LIMIT 10");
                   while($k=mysql_fetch_array($komentar)){
-
                     $isi_komentar = strip_tags($k['isi_komentar']); // membuat paragraf pada isi komentar dan mengabaikan tag html
                     $isi = substr($isi_komentar,0,100); // ambil sebanyak 100 karakter
                     $isi = substr($isi_komentar,0,strrpos($isi," ")); // potong per spasi kalimat
-
                     echo "<li class='garisbawah'><a href='http://$k[url]' target='_blank' title=\"http://$k[url]\"><b>$k[nama_komentar]</b></a> 
                           pada <a href='berita-$k[id_berita]-$k[judul_seo].html#$k[id_komentar]' title=\"$isi ...\">$k[judul]</a></li>";
                   }
@@ -133,6 +126,7 @@
                 if ($t['gambar']!=''){
 			             echo "<span class=image><img src='foto_berita/small_$t[gambar]' width=110 border=0></span>";
 		            }
+                $tgl = tgl_indo($t[tanggal]);
                 // Tampilkan hanya sebagian isi berita
                 $isi_berita = htmlentities(strip_tags($t['isi_berita'])); // membuat paragraf pada isi berita dan mengabaikan tag html
                 $isi = substr($isi_berita,0,120); // ambil sebanyak 120 karakter
@@ -207,6 +201,7 @@ echo "</ul>";
                 if ($t['gambar']!=''){
 			             echo "<span class=image><img src='foto_berita/small_$t[gambar]' width=110 border=0></span>";
 		            }
+                $tgl = tgl_indo($t[tanggal]);
                 // Tampilkan hanya sebagian isi berita
                 $isi_berita = htmlentities(strip_tags($t['isi_berita'])); // membuat paragraf pada isi berita dan mengabaikan tag html
                 $isi = substr($isi_berita,0,120); // ambil sebanyak 120 karakter
@@ -246,7 +241,7 @@ elseif ($_GET['module']=='detailberita'){
 	$detail=mysql_query("SELECT * FROM berita,users,kategori    
                       WHERE users.username=berita.username 
                       AND kategori.id_kategori=berita.id_kategori 
-                      AND id_berita='$_GET[id]'");
+                      AND id_berita='".$val->validasi($_GET['id'],'sql')."'");
 	$d   = mysql_fetch_array($detail);
 	$tgl = tgl_indo($d[tanggal]);
 	$baca = $d[dibaca]+1;
@@ -269,7 +264,7 @@ elseif ($_GET['module']=='detailberita'){
   $jml_katakan = (integer)count($pisah_kata);
 
   $jml_kata = $jml_katakan-1; 
-  $ambil_id = substr($_GET[id],0,4);
+  $ambil_id = substr($val->validasi($_GET['id'],'sql'),0,4);
 
   // Looping query sebanyak jml_kata
   $cari = "SELECT * FROM berita WHERE (id_berita<'$ambil_id') and (id_berita!='$ambil_id') and (" ;
@@ -289,11 +284,10 @@ elseif ($_GET['module']=='detailberita'){
 
   // Apabila detail berita dilihat, maka tambahkan berapa kali dibacanya
   mysql_query("UPDATE berita SET dibaca=$d[dibaca]+1 
-              WHERE id_berita='$_GET[id]'"); 
-
+				  WHERE id_berita='".$val->validasi($_GET['id'],'sql')."'"); 
 
   // Hitung jumlah komentar
-  $komentar = mysql_query("select count(komentar.id_komentar) as jml from komentar WHERE id_berita='$_GET[id]' AND aktif='Y'");
+  $komentar = mysql_query("select count(komentar.id_komentar) as jml from komentar WHERE id_berita='".$val->validasi($_GET['id'],'sql')."' AND aktif='Y'");
   $k = mysql_fetch_array($komentar); 
   echo "<br /><span class=judul><b>$k[jml]</b> Komentar : </span><br /><hr color=#CCC noshade=noshade />";
 
@@ -303,7 +297,7 @@ elseif ($_GET['module']=='detailberita'){
   $posisi = $p->cariPosisi($batas);
 
   // Komentar berita
-  $sql = mysql_query("SELECT * FROM komentar WHERE id_berita='$_GET[id]' AND aktif='Y' LIMIT $posisi,$batas");
+	$sql = mysql_query("SELECT * FROM komentar WHERE id_berita='".$val->validasi($_GET['id'],'sql')."' AND aktif='Y' LIMIT $posisi,$batas");
 	$jml = mysql_num_rows($sql);
   // Apabila sudah ada komentar, tampilkan 
   if ($jml > 0){
@@ -325,7 +319,7 @@ elseif ($_GET['module']=='detailberita'){
       echo "<hr color=#CCC noshade=noshade />";	 		  
     }
 
-   	$jmldata     = mysql_num_rows(mysql_query("SELECT * FROM komentar WHERE id_berita='$_GET[id]' AND aktif='Y'"));
+		$jmldata     = mysql_num_rows(mysql_query("SELECT * FROM komentar WHERE id_berita='".$val->validasi($_GET['id'],'sql')."' AND aktif='Y'"));
     $jmlhalaman  = $p->jumlahHalaman($jmldata, $batas);
     $linkHalaman = $p->navHalaman($_GET['halkomentar'], $jmlhalaman);
 
@@ -335,7 +329,7 @@ elseif ($_GET['module']=='detailberita'){
   echo "<br /><b>Isi Komentar :</b>
         <table width=100% style='border: 1pt dashed #0000CC;padding: 10px;'>
         <form name='form' action=simpankomentar.php method=POST onSubmit=\"return validasi(this)\">
-        <input type=hidden name=id value=$_GET[id]>
+  			<input type=hidden name=id value=".$val->validasi($_GET['id'],'sql').">
         <tr><td>Nama</td><td> : <input type=text name=nama_komentar size=40 maxlength=50></td></tr>
         <tr><td>Website</td><td> : <input type=text name=url size=40 maxlength=50></td></tr>
         <tr><td valign=top>Komentar</td><td> <textarea name='isi_komentar' style='width: 300px; height: 100px;'></textarea></td></tr>
@@ -352,7 +346,7 @@ elseif ($_GET['module']=='detailkategori'){
 	echo "<div id='content'>          
            <div id='content-detail'>";            
   // Tampilkan nama kategori
-  $sq = mysql_query("SELECT nama_kategori from kategori where id_kategori='$_GET[id]'");
+  $sq = mysql_query("SELECT nama_kategori from kategori where id_kategori='".$val->validasi($_GET['id'],'sql')."'");
   $n = mysql_fetch_array($sq);
   echo "<span class=judul_head>&#187; Kategori : <b>$n[nama_kategori]</b></span><br /><br />";
   
@@ -361,7 +355,7 @@ elseif ($_GET['module']=='detailkategori'){
   $posisi = $p->cariPosisi($batas);
   
   // Tampilkan daftar berita sesuai dengan kategori yang dipilih
- 	$sql   = "SELECT * FROM berita WHERE id_kategori='$_GET[id]' 
+ 	$sql   = "SELECT * FROM berita WHERE id_kategori='".$val->validasi($_GET['id'],'sql')."' 
             ORDER BY id_berita DESC LIMIT $posisi,$batas";		 
 
 	$hasil = mysql_query($sql);
@@ -384,7 +378,7 @@ elseif ($_GET['module']=='detailkategori'){
           <br /></td></tr></table><hr color=#CCC noshade=noshade />";
 	 }
 	
-  $jmldata     = mysql_num_rows(mysql_query("SELECT * FROM berita WHERE id_kategori='$_GET[id]'"));
+  $jmldata     = mysql_num_rows(mysql_query("SELECT * FROM berita WHERE id_kategori='".$val->validasi($_GET['id'],'sql')."'"));
   $jmlhalaman  = $p->jumlahHalaman($jmldata, $batas);
   $linkHalaman = $p->navHalaman($_GET[halkategori], $jmlhalaman);
 
@@ -403,7 +397,7 @@ elseif ($_GET['module']=='detailagenda'){
                <div id='content-detail'>";
                
 	$detail=mysql_query("SELECT * FROM agenda 
-                      WHERE id_agenda='$_GET[id]'");
+                      WHERE id_agenda='".$val->validasi($_GET['id'],'sql')."'");
 	$d   = mysql_fetch_array($detail);
   $tgl_posting   = tgl_indo($d[tgl_posting]);
   $tgl_mulai   = tgl_indo($d[tgl_mulai]);
@@ -576,7 +570,7 @@ elseif ($_GET['module']=='halamanstatis'){
                <div id='content-detail'>";
                
 	$detail=mysql_query("SELECT * FROM halamanstatis 
-                      WHERE id_halaman='$_GET[id]'");
+                      WHERE id_halaman='".$val->validasi($_GET['id'],'sql')."'");
 	$d   = mysql_fetch_array($detail);
   $tgl_posting   = tgl_indo($d[tgl_posting]);
 	
@@ -736,7 +730,7 @@ elseif ($_GET['module']=='detailalbum'){
   echo "<div id='content'>          
           <div id='content-detail'>";
   // Dapatkan judul album
-  $j = mysql_fetch_array(mysql_query("SELECT jdl_album FROM album WHERE id_album='$_GET[id]'"));
+  $j = mysql_fetch_array(mysql_query("SELECT jdl_album FROM album WHERE id_album='".$val->validasi($_GET['id'],'sql')."'"));
   echo "<span class=judul_head>&#187; <a href=semua-album.html><b>Album</b></a> &#187; <b>$j[jdl_album]</b></span><br />"; 
   $p      = new Paging6;
   $batas  = 10;
@@ -745,7 +739,7 @@ elseif ($_GET['module']=='detailalbum'){
   // Tentukan kolom
   $col = 5;
 
-  $g = mysql_query("SELECT * FROM gallery WHERE id_album='$_GET[id]' ORDER BY id_gallery DESC LIMIT $posisi,$batas");
+  $g = mysql_query("SELECT * FROM gallery WHERE id_album='".$val->validasi($_GET['id'],'sql')."' ORDER BY id_gallery DESC LIMIT $posisi,$batas");
   $ada = mysql_num_rows($g);
   
   if ($ada > 0) {
@@ -765,7 +759,7 @@ elseif ($_GET['module']=='detailalbum'){
   }
   echo "</tr></table><br />";
 
-  $jmldata     = mysql_num_rows(mysql_query("SELECT * FROM gallery WHERE id_album='$_GET[id]'"));
+  $jmldata     = mysql_num_rows(mysql_query("SELECT * FROM gallery WHERE id_album='".$val->validasi($_GET['id'],'sql')."'"));
   $jmlhalaman  = $p->jumlahHalaman($jmldata, $batas);
   $linkHalaman = $p->navHalaman($_GET[halgaleri], $jmlhalaman);
 

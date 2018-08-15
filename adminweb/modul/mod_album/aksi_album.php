@@ -15,8 +15,9 @@ $act=$_GET['act'];
 
 // Input album
 if ($module=='album' AND $act=='input'){
-  $lokasi_file = $_FILES['fupload']['tmp_name'];
-  $nama_file   = $_FILES['fupload']['name'];
+  $lokasi_file    = $_FILES['fupload']['tmp_name'];
+  $tipe_file      = $_FILES['fupload']['type'];
+  $nama_file      = $_FILES['fupload']['name'];
   $acak           = rand(000000,999999);
   $nama_file_unik = $acak.$nama_file; 
 
@@ -50,8 +51,9 @@ if ($module=='album' AND $act=='input'){
 
 // Update album
 elseif ($module=='album' AND $act=='update'){
-  $lokasi_file = $_FILES['fupload']['tmp_name'];
-  $nama_file   = $_FILES['fupload']['name'];
+  $lokasi_file    = $_FILES['fupload']['tmp_name'];
+  $tipe_file      = $_FILES['fupload']['type'];
+  $nama_file      = $_FILES['fupload']['name'];
   $acak           = rand(000000,999999);
   $nama_file_unik = $acak.$nama_file; 
 

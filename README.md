@@ -1,5 +1,5 @@
-CMS Lokomedia versi 1.5.6
-(Update terakhir 11 Februari 2012)
+CMS Lokomedia versi 1.5.7
+(Update terakhir 31 Maret 2012)
 
 
 - Seiring terbitnya buku 'TRIK DAHSYAT MENGUASAI AJAX DENGAN JQUERY', maka CMS Lokomedia pun resmi update.
@@ -33,6 +33,17 @@ Lukmanul Hakim
 
 
 Log update terakhir:
+
+31/03/2012 (lokomedia-1.5.7)
+- Tanggal yang keliru di halaman utama templates eL jQuery ala Yahoo, perbaikan pada file kiri.php yang ada di folder lokomedia/templates/eljquery-yahoo, pada baris ke-129 dan 204 ditambahkan satu baris kode, yaitu: $tgl = tgl_indo($t[tanggal]); {Thanks to Yugo}
+- Tambah dan Edit Album di halaman admin tidak berfungsi, perbaikan pada file aksi_album.php yang ada di folder lokomedia/adminweb/modul/mod_album, pada baris ke-19 dan 55 ditambahkan satu baris kode, yaitu: $tipe_file = $_FILES['fupload']['type']; {Thanks to die_santo}
+- Ketika logout/keluar dari halaman admin langsung menuju ke halaman utama pengunjung, namun sebelumnya ada kotak dialog yang menginformasikan Anda telah keluar dari halaman administrator, perbaikan pada file logout.php yang ada di folder lokomedia/adminweb, ubah kode pada baris ke-4 menjadi:
+echo "<script>alert('Anda telah keluar dari halaman administrator'); window.location = '../index.php'</script>";
+{Thanks to Rizal Faizal, Ghoblin, and Andi}
+- Tambah dan Edit Sekilas Info di halaman admin tidak berfungsi, perbaikan pada file aksi_sekilasinfo.php yang ada di folder lokomedia/adminweb/modul/mod_sekilasinfo, kode pada baris ke-3 s/d 7 untuk direct access dihapus. {Thanks to Affandy and Boby}
+- Untuk menghindari SQL Injection dan XSS, dibuatlah sebuah fungsi (fungsi_validasi.php) yang diletakkan di folder lokomedia/config, fungsi tersebut dipanggil (require_once) melalui file koneksi.php (perhatikan pada baris 3 dan 16), dimana fungsi tersebut terutama untuk menangkal injeksi yang dilakukan melalui $_GET[id], cara penggunaannya: $val->validasi($_GET[id],'sql'). Sebagai contoh, penerapannya pada file kiri.php yang ada di folder lokomedia/templates/eljquery-yahoo, cukup banyak yang diubah, yaitu pada baris 248, 267, 287, 290, 300, 322, 332, 349, 358, 381, 400, 573, 734, 742, dan 762. Fungsi security ini baru diterapkan pada templates el jquery ala yahoo. Selanjutnya, bulan April 2012 ini akan dilakukan security testing lagi, apabila terbukti cukup aman, baru akan diterapkan pada templates lainnya, termasuk templates baru. {thanks to wenkhairu devilzc0de}
+- Satu lagi celah security, yaitu LFD (Local File Disclore) pada fitur Download, buka file downlot.php yang ada di folder lokomedia, pada baris ke-7 ditambahkan kode, yaitu: if(file_exists($direktori.$filename)) {thanks to wenkhairu devilzc0de}
+
 
 11/02/2012 (lokomedia-1.5.6)
 - Penambahan templates baru (hasil modifikasi dari templates eL jQuery Versi 2) dengan nama eL jQuery ala Yahoo, karena headline beritanya menggunakan news slider ala Yahoo {Thanks to Rizal Faizal}. Selain itu, ada tampilan Berita Terkini, Terpopuler dan Komentar dalam bentuk Tab yang terletak disamping kanan headline berita.

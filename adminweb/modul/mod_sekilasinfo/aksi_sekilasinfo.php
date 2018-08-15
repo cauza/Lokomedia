@@ -1,11 +1,5 @@
 <?php
 session_start();
-//Deteksi hanya bisa diinclude, tidak bisa langsung dibuka (direct access) 
-if(count(get_included_files())==1){
-echo "<meta http-equiv='refresh' content='0; url=http://$_SERVER[HTTP_HOST]'>";
-exit("Direct access not permitted.");
-}
-
 if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
   echo "<link href='style.css' rel='stylesheet' type='text/css'>
  <center>Untuk mengakses modul, Anda harus login <br>";

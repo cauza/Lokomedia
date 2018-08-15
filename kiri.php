@@ -1,5 +1,5 @@
 <script language="javascript">
-function validasi(form){
+function valkomen(form){
   if (form.nama_komentar.value == ""){
     alert("Anda belum mengisikan Nama.");
     form.nama_komentar.focus();
