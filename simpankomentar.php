@@ -28,6 +28,7 @@ $nama_komentar = antiinjection($_POST['nama_komentar']);
 $url = antiinjection($_POST['url']);
 $isi_komentar = antiinjection($_POST['isi_komentar']);
 
+
 	if(!empty($_POST['kode'])){
 		if($_POST['kode']==$_SESSION['captcha_session']){
 

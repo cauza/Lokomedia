@@ -1,4 +1,17 @@
 <?php
+session_start();
+//Deteksi hanya bisa diinclude, tidak bisa langsung dibuka (direct access) 
+if(count(get_included_files())==1){
+echo "<meta http-equiv='refresh' content='0; url=http://$_SERVER[HTTP_HOST]'>";
+exit("Direct access not permitted.");
+}
+
+if (empty($_SESSION['username']) AND empty($_SESSION['passuser'])){
+  echo "<link href='style.css' rel='stylesheet' type='text/css'>
+ <center>Untuk mengakses modul, Anda harus login <br>";
+  echo "<a href=../../index.php><b>LOGIN</b></a></center>";
+}
+else{
 include "../../../config/koneksi.php";
 include "../../../config/library.php";
 include "../../../config/fungsi_thumb.php";
@@ -12,7 +25,7 @@ if ($module=='sekilasinfo' AND $act=='hapus'){
   if ($data['gambar']!=''){
   mysql_query("DELETE FROM sekilasinfo WHERE id_sekilas='$_GET[id]'");
      unlink("../../../foto_info/$_GET[namafile]");   
-     unlink("../../../foto_info/small_$_GET[namafile]");   
+     unlink("../../../foto_info/kecil_$_GET[namafile]");   
   }
   else{
   mysql_query("DELETE FROM sekilasinfo WHERE id_sekilas='$_GET[id]'");  
@@ -24,13 +37,22 @@ if ($module=='sekilasinfo' AND $act=='hapus'){
 elseif ($module=='sekilasinfo' AND $act=='input'){
   $lokasi_file = $_FILES['fupload']['tmp_name'];
   $tipe_file      = $_FILES['fupload']['type'];
-  $nama_file   = $_FILES['fupload']['name'];
+  $nama_file   = $_FILES['fupload']['name'];   
 
+  $mime = array(
+   'image/png' => '.png',
+   'image/x-png' => '.png',
+   'image/gif' => '.gif',
+   'image/jpeg' => '.jpg',
+   'image/pjpeg' => '.jpg');
+   
+   $ekstensi = substr($nama_file, strrpos($nama_file, '.'));
+  
   // Apabila ada gambar yang diupload
   if (!empty($lokasi_file)){
-   if ($tipe_file != "image/jpeg" AND $tipe_file != "image/pjpeg"){
-    echo "<script>window.alert('Upload Gagal, Pastikan File yang di Upload bertipe *.JPG');
-        window.location=('../../media.php?module=sekilasinfo')</script>";
+    if (!array_keys($mime, $ekstensi)){
+      echo "<script>window.alert('Upload Gagal, Pastikan File yang di Upload bertipe JPG/GIF/PNG. Patch by eidelweiss');
+      window.location=('../../media.php?module=sekilasinfo')</script>";
     }
     else{
     UploadInfo($nama_file);
@@ -77,5 +99,6 @@ elseif ($module=='sekilasinfo' AND $act=='update'){
   header('location:../../media.php?module='.$module);
   }
   }
+}
 }
 ?>

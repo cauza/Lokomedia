@@ -169,7 +169,7 @@ elseif ($_GET['module']=='detailberita'){
       $tanggal = tgl_indo($s['tgl']);
       // Apabila ada link website diisi, tampilkan dalam bentuk link   
  	    if ($s['url']!=''){
-        echo "<span class=komentar><a name=$s[id_komentar] id=$s[id_komentar]><a href='http://$s[url]' target='_blank'>$s[nama_komentar]</a></a></span><br />";  
+        echo "<span class=komentar><a name=$s[id_komentar] id=$s[id_komentar]><a href='$s[url]' target='_blank'>$s[nama_komentar]</a></a></span><br />";  
 	    }
 	    else{
         echo "<span class=komentar>$s[nama_komentar]</span><br />";  

@@ -4,7 +4,7 @@ RewriteEngine on
 RewriteRule ^home$ media.php?module=home [L]
 RewriteRule ^galeri-(.*)\.html$ zoom.php?id=$1 [L]
 RewriteRule ^album-([0-9]+)-(.*)\.html$ media.php?module=detailalbum&id=$1 [L]
-RewriteRule ^berita-([0-9]+)-(.*)\.html$ media.php?module=detailberita&id=$1 [L]
+RewriteRule ^berita-(.*)-(.*)\.html$ media.php?module=detailberita&id=$1 [L]
 RewriteRule ^agenda-(.*)\.html$ media.php?module=detailagenda&id=$1 [L]
 RewriteRule ^statis-(.*)\.html$ media.php?module=halamanstatis&id=$1 [L]
 RewriteRule ^hasil-pencarian\.html$ media.php?module=hasilcari&id=$1 [L]
@@ -24,7 +24,9 @@ RewriteRule ^semua-download\.html$ media.php?module=semuadownload&id=$1 [L]
 RewriteRule ^haldownload-(.*)\.html$ media.php?module=semuadownload&haldownload=$1 [L]
 RewriteRule ^semua-album\.html$ media.php?module=semuaalbum&id=$1 [L]
 RewriteRule ^halgaleri-([0-9]+)-(.*)\.html$ media.php?module=detailalbum&id=$1&halgaleri=$2 [L]
-RewriteRule ^halkomentar-([0-9]+)-(.*)\.html$ media.php?module=detailberita&id=$1&halkomentar=$2 [L]
+RewriteRule ^halkomentar-(.*)-([0-9]+)\.html$ media.php?module=detailberita&id=$1&halkomentar=$2 [L]
+
+
 
 Options All -Indexes
 </IfModule>

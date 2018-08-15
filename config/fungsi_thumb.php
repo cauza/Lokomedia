@@ -28,7 +28,7 @@ function UploadImage($fupload_name){
 
   //Simpan dalam versi medium 360 pixel
   //Set ukuran gambar hasil perubahan
-  $dst_width2 = 360;
+  $dst_width2 = 390;
   $dst_height2 = ($dst_width2/$src_width)*$src_height;
 
   //proses perubahan ukuran
@@ -158,5 +158,15 @@ function UploadInfo($fupload_name){
   //Hapus gambar di memori komputer
   imagedestroy($im_src);
   imagedestroy($im);
+}
+
+// Upload gambar untuk favicon
+function UploadFavicon($fupload_name){
+  //direktori favicon di root
+  $vdir_upload = "../../../";
+  $vfile_upload = $vdir_upload . $fupload_name;
+
+  //Simpan gambar dalam ukuran sebenarnya
+  move_uploaded_file($_FILES["fupload"]["tmp_name"], $vfile_upload);
 }
 ?>

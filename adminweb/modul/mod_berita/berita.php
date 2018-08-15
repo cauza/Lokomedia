@@ -54,7 +54,7 @@ switch($_GET[act]){
                 <td>$r[judul]</td>
                 <td>$tgl_posting</td>
 		            <td><a href=?module=berita&act=editberita&id=$r[id_berita]>Edit</a> | 
-		                <a href='$aksi?module=berita&act=hapus&id=$r[id_berita]&namafile=$r[gambar]'>Hapus</a></td>
+		                <a href=\"$aksi?module=berita&act=hapus&id=$r[id_berita]&namafile=$r[gambar]\" onClick=\"return confirm('Apakah Anda benar-benar mau menghapusnya?')\">Hapus</a></td>
 		        </tr>";
       $no++;
     }
@@ -133,7 +133,7 @@ switch($_GET[act]){
             }
     echo "</select></td></tr>
            <tr><td>Headline</td>    <td> : <input type=radio name='headline' value='Y' checked>Y  
-                                         <input type=radio name='publish' value='N'> N 
+                                         <input type=radio name='headline' value='N'> N 
                                          <br>(Apabila berita ada gambarnya dan ingin dijadikan headline, pilih Headline = Y)</td></tr>
           <tr><td>Isi Berita</td>  <td> <textarea name='isi_berita'  style='width: 600px; height: 350px;'></textarea></td></tr>
           <tr><td>Gambar</td>      <td> : <input type=file name='fupload' size=40> 

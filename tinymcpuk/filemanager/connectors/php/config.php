@@ -46,8 +46,8 @@ $fckphp_config['urlprefix']=$fckphp_config['prot'].$_SERVER['SERVER_NAME'];
 /*------------------------------------------------------------------------------*/
 $fckphp_config['UserFilesPath'] = "./lokomedia/tinymcpuk/gambar" ;
 /*==============================================================================*/
-/* Apabila sudah di-onlinekan, ubah baris 47 dengan settingan seperti berikut:
-$fckphp_config['UserFilesPath'] = "./tinymcpuk/gambar" ; */
+/* Apabila sudah di-onlinekan, ubah baris 47 dengan settingan seperti berikut: */
+// $fckphp_config['UserFilesPath'] = "./tinymcpuk/gambar" ; 
 
 /*------------------------------------------------------------------------------*/
 /* Progressbar handler (script that monitors upload progress) (''=none)

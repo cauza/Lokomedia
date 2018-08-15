@@ -5,6 +5,8 @@ if (isset($_GET['id'])){
 	echo "$j[tag]";
 }
 else{
-		echo "lokomedia, bukulokomedia, toko online, buku komputer, trik, tutorial, konsultasi, distro kaos, php";
+      $sql2 = mysql_query("select meta_keyword from identitas LIMIT 1");
+      $j2   = mysql_fetch_array($sql2);
+		  echo "$j2[meta_keyword]";
 }
 ?>

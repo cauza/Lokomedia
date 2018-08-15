@@ -68,7 +68,7 @@ elseif ($module=='album' AND $act=='update'){
   else{
     if ($tipe_file != "image/jpeg" AND $tipe_file != "image/pjpeg"){
     echo "<script>window.alert('Upload Gagal, Pastikan File yang di Upload bertipe *.JPG');
-        window.location=('../../media.php?module=berita')</script>";
+        window.location=('../../media.php?module=album')</script>";
     }
     else{
     UploadAlbum($nama_file_unik);

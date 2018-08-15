@@ -228,6 +228,13 @@ elseif ($_GET['module']=='sekilasinfo'){
   }
 }
 
+// Bagian Identitas Website
+elseif ($_GET['module']=='identitas'){
+  if ($_SESSION['leveluser']=='admin'){
+    include "modul/mod_identitas/identitas.php";
+  }
+}
+
 // Apabila modul tidak ditemukan
 else{
   echo "<p><b>MODUL BELUM ADA ATAU BELUM LENGKAP</b></p>";
